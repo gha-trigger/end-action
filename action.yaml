@@ -1,0 +1,21 @@
+name: End GitHub Actions job with gha-trigger
+description: End GitHub Actions job with gha-trigger
+inputs:
+  job_status:
+    description: job status
+    required: true
+
+  github_token:
+    description: GitHub Access Token to update a commit status
+    required: true
+runs:
+  using: composite
+  steps:
+    - uses: suzuki-shunsuke/update-commit-status-action@main
+      if: always()
+      with:
+        repo_owner: ${{env.GHA_REPOSITORY_OWNER}}
+        repo_name: ${{env.MAIN_REPO_NAME}}
+        sha: ${{env.GHA_COMMIT_STATUS_SHA}}
+        github_token: ${{inputs.github_token}}
+        state: ${{inputs.job_status}}
