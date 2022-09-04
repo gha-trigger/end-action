@@ -14,6 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: gha-trigger/end-action@main
+        if: always()
         with:
           github_token: ${{steps.start.outputs.github_app_token}}
           state: ${{job.status}}

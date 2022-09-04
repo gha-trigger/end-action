@@ -12,7 +12,6 @@ runs:
   using: composite
   steps:
     - uses: suzuki-shunsuke/update-commit-status-action@main
-      if: always()
       with:
         repo_owner: ${{env.GHA_REPOSITORY_OWNER}}
         repo_name: ${{env.MAIN_REPO_NAME}}
