@@ -1,7 +1,7 @@
 name: End GitHub Actions job with gha-trigger
 description: End GitHub Actions job with gha-trigger
 inputs:
-  job_status:
+  state:
     description: job status
     required: true
 
@@ -17,4 +17,4 @@ runs:
         repo_name: ${{env.MAIN_REPO_NAME}}
         sha: ${{env.GHA_COMMIT_STATUS_SHA}}
         github_token: ${{inputs.github_token}}
-        state: ${{inputs.job_status}}
+        state: ${{inputs.state}}
