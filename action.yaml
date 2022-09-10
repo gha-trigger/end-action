@@ -11,7 +11,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: suzuki-shunsuke/update-commit-status-action@main
+    - uses: suzuki-shunsuke/update-commit-status-action@v0.1.0
       if: env.GHA_COMMIT_STATUS_SHA
       with:
         repo_owner: ${{env.GHA_REPOSITORY_OWNER}}
