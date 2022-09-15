@@ -11,11 +11,19 @@ inputs:
 runs:
   using: composite
   steps:
+    - run: |
+        if [ "${GHA_WORKFLOW_COMMIT_STATUS:-}" = true ]; then
+          echo "::set-output name=context::${{ github.workflow }} (${{ github.event_name }})"
+          exit 0
+        fi
+      shell: bash
+
     - uses: suzuki-shunsuke/update-commit-status-action@v0.1.0
       if: env.GHA_COMMIT_STATUS_SHA
       with:
         repo_owner: ${{env.GHA_REPOSITORY_OWNER}}
         repo_name: ${{env.GHA_REPOSITORY_NAME}}
         sha: ${{env.GHA_COMMIT_STATUS_SHA}}
+        context: ${{steps.commit_status.outputs.context}}
         github_token: ${{inputs.github_token}}
         state: ${{inputs.state}}
