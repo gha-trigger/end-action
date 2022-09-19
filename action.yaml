@@ -12,6 +12,9 @@ inputs:
     description: Update a commit status
     required: false
     default: false
+  needs:
+    description: needs context.
+    required: false
 runs:
   using: composite
   steps:
