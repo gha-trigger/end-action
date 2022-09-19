@@ -8,7 +8,7 @@ inputs:
   github_token:
     description: GitHub Access Token to update a commit status
     required: true
-  update_commit_status:
+  start_workflow:
     description: Update a commit status
     required: false
     default: false
@@ -22,5 +22,5 @@ runs:
       with:
         github_token: ${{inputs.github_token}}
         state: ${{inputs.state}}
-        update_commit_status: ${{inputs.update_commit_status}}
+        start_workflow: ${{inputs.start_workflow}}
         needs: ${{inputs.needs}}
