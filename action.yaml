@@ -3,7 +3,7 @@ description: End GitHub Actions job with gha-trigger
 inputs:
   state:
     description: job status
-    required: true
+    required: false
 
   github_token:
     description: GitHub Access Token to update a commit status
