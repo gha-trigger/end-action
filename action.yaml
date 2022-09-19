@@ -3,19 +3,24 @@ description: End GitHub Actions job with gha-trigger
 inputs:
   state:
     description: job status
-    required: true
+    required: false
 
   github_token:
     description: GitHub Access Token to update a commit status
     required: true
+  start_workflow:
+    description: Update a commit status
+    required: false
+    default: false
+  needs:
+    description: needs context.
+    required: false
 runs:
   using: composite
   steps:
-    - uses: suzuki-shunsuke/update-commit-status-action@v0.1.0
-      if: env.GHA_COMMIT_STATUS_SHA
+    - uses: gha-trigger/commit-status-action@v0.1.0
       with:
-        repo_owner: ${{env.GHA_REPOSITORY_OWNER}}
-        repo_name: ${{env.GHA_REPOSITORY_NAME}}
-        sha: ${{env.GHA_COMMIT_STATUS_SHA}}
         github_token: ${{inputs.github_token}}
         state: ${{inputs.state}}
+        start_workflow: ${{inputs.start_workflow}}
+        needs: ${{inputs.needs}}
