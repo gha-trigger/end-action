@@ -1,0 +1,81 @@
+name: test
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: |
+          cat << EOS >> "$GITHUB_STEP_SUMMARY"
+          Check commit statuses
+
+          - [Normal](https://github.com/gha-trigger/end-action/commit/b1bd5cc0cd41a58866630697af871082216a75e2)
+          - [workflow skip](https://github.com/gha-trigger/end-action/commit/fbb0cdecdad7224f9ea86aeaefad4fce36449aea)
+          - [workflow end (failure)](https://github.com/gha-trigger/end-action/commit/8bbd8c6e476af44e8e7e7748a26d500c91b63812)
+          - [workflow end (success)](https://github.com/gha-trigger/end-action/commit/4f92753f67ed9efc7f1883b382b82d3b3d77ad6f)
+
+          EOS
+
+      - name: normal
+        uses: ./
+        with:
+          github_token: ${{github.token}}
+          state: success
+        env:
+          GHA_REPOSITORY_OWNER: gha-trigger
+          GHA_REPOSITORY_NAME: end-action
+          GHA_COMMIT_STATUS_SHA: b1bd5cc0cd41a58866630697af871082216a75e2
+
+      - name: workflow skip
+        uses: ./
+        with:
+          github_token: ${{github.token}}
+        env:
+          GHA_REPOSITORY_OWNER: gha-trigger
+          GHA_REPOSITORY_NAME: end-action
+          GHA_COMMIT_STATUS_SHA: fbb0cdecdad7224f9ea86aeaefad4fce36449aea
+          GHA_WORKFLOW_COMMIT_STATUS: "true"
+
+      - name: workflow end (failure)
+        uses: ./
+        with:
+          github_token: ${{github.token}}
+          needs: |
+            {
+              "build": {
+                "result": "success"
+              },
+              "deploy": {
+                "result": "failure"
+              }
+            }
+        env:
+          GHA_REPOSITORY_OWNER: gha-trigger
+          GHA_REPOSITORY_NAME: end-action
+          GHA_COMMIT_STATUS_SHA: 8bbd8c6e476af44e8e7e7748a26d500c91b63812
+          GHA_WORKFLOW_COMMIT_STATUS: "true"
+
+      - name: workflow end (success)
+        uses: ./
+        with:
+          github_token: ${{github.token}}
+          needs: |
+            {
+              "build": {
+                "result": "success"
+              },
+              "deploy": {
+                "result": "success"
+              }
+            }
+        env:
+          GHA_REPOSITORY_OWNER: gha-trigger
+          GHA_REPOSITORY_NAME: end-action
+          GHA_COMMIT_STATUS_SHA: 4f92753f67ed9efc7f1883b382b82d3b3d77ad6f
+          GHA_WORKFLOW_COMMIT_STATUS: "true"
