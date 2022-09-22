@@ -14,7 +14,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: gha-trigger/commit-status-action@v0.1.0
+    - uses: gha-trigger/commit-status-action@v0.1.1
       with:
         github_token: ${{inputs.github_token}}
         state: ${{inputs.state}}
